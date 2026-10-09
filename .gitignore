@@ -19,6 +19,8 @@ __pycache__/
 # Virtual environments
 .venv
 /data
+
+# Custom logs and temps
 .agent/
 *.log
 *.pid

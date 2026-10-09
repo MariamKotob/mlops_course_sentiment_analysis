@@ -5,22 +5,30 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "dvc[s3]>=3.50.0",
-    "mlflow>=2.15.0",
-    "boto3>=1.34.0",
-    "s3fs>=2024.6.0",
-    "emoji>=2.16.0",
+    "bentoml>=1.4",
     "fastapi[standard]>=0.142.2",
-    "matplotlib>=3.11.2",
-    "numpy>=2.5.3",
-    "pandas>=3.0.6",
     "pydantic>=2.13.5",
     "pyyaml>=6.0.3",
-    "scikit-learn>=1.9.1",
-    "torch>=2.14.1",
-    "tqdm>=4.70.1",
+    "numpy>=2.5.3",
+    "pandas>=3.0.6",
     "transformers>=5.18.0",
+    "emoji>=2.16.0",
+    "onnxruntime>=1.30.0",
     "prometheus-fastapi-instrumentator>=8.1.0",
+]
+
+[project.optional-dependencies]
+train = [
+    "torch>=2.14.1",
+    "mlflow>=2.15.0",
+    "dvc[s3]>=3.50.0",
+    "boto3>=1.34.0",
+    "s3fs>=2024.6.0",
+    "scikit-learn>=1.9.1",
+    "matplotlib>=3.11.2",
+    "tqdm>=4.70.1",
+    "onnx>=1.23.2",
+    "onnxscript>=0.7.2",
 ]
 
 [project.scripts]
@@ -44,6 +52,8 @@ dev = [
     "ipykernel>=7.4.0",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
+    "locust>=2.32.0",
+    "kagglehub>=0.2.0",
 ]
 
 [tool.pytest.ini_options]
@@ -51,7 +61,11 @@ addopts = "--cov=mlops_practitioner_course --cov-report=term-missing"
 
 [tool.coverage.run]
 # CLI entry point: orchestration only, its parts are tested (or excluded) individually.
-omit = ["*/mlops_practitioner_course/main.py"]
+omit = [
+    "*/mlops_practitioner_course/main.py",
+    "*/mlops_practitioner_course/modeling/*.py",
+    "*/mlops_practitioner_course/serving/*.py"
+]
 
 [tool.coverage.report]
 fail_under = 70

@@ -39,7 +39,11 @@ class SentimentPredictor:  # pragma: no cover
         model, settings = load_checkpoint(path, torch_device)
         return cls(
             model=model,
-            preprocessor=BertPreprocessor.from_settings(settings),
+            preprocessor=BertPreprocessor.from_settings(
+                settings,
+                local_files_only=True,
+                model_path=str(Path(path).parent),
+            ),
             device=torch_device,
             threshold=settings.evaluation.threshold,
         )
@@ -62,3 +66,5 @@ class SentimentPredictor:  # pragma: no cover
         """Sentiment label ("negative" / "positive") for each text."""
         positive = self.predict_proba(texts) >= self.threshold
         return [self.LABEL_NAMES[int(p)] for p in positive]
+
+

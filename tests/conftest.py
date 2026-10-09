@@ -6,25 +6,31 @@ from mlops_practitioner_course.api import app
 from mlops_practitioner_course.config import Settings
 
 
-class FakePredictor:
-    """Stands in for the real model so API tests need no weights or download."""
+class MockModelServiceToAsync:
+    async def predict(self, texts):
+        return [0.9] * len(texts)
+    async def get_threshold(self):
+        return 0.5
 
-    LABEL_NAMES = ("negative", "positive")
-    threshold = 0.5
-
-    def predict_proba(self, texts):
-        return np.full(len(texts), 0.9)
-
+class MockModelService:
+    def __init__(self):
+        self.to_async = MockModelServiceToAsync()
 
 @pytest.fixture
 def sample_reviews():
     return ["المنتج رائع جدا", "سيء ولا أنصح به", "عادي"]
 
-
 @pytest.fixture
 def client(monkeypatch):
+    from mlops_practitioner_course.api import get_model_service
+    # Override the get_model_service dependency
+    app.dependency_overrides[get_model_service] = lambda: MockModelService()
+    
     # Default Settings, not config.yaml, so tests don't depend on the local config.
     monkeypatch.setattr(app.state, "settings", Settings(), raising=False)
-    monkeypatch.setattr(app.state, "predictor", FakePredictor(), raising=False)
-    # Not used as a context manager, so the lifespan (real model loading) never runs.
-    return TestClient(app)
+    
+    with TestClient(app) as test_client:
+        yield test_client
+    
+    # Clean up overrides
+    app.dependency_overrides.clear()

@@ -1,6 +1,6 @@
 outs:
-- md5: fb1ffe3b4d59e001efd128a528405c8c.dir
-  size: 46347918
+- md5: 6525510ee8248b4687bbda0c873474a1.dir
+  size: 46348609
   nfiles: 6
   hash: md5
   path: bert-mini

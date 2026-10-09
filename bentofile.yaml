@@ -1,0 +1,14 @@
+name: "sentiment-api"
+service: "mlops_practitioner_course.serving.service:Gateway"
+include:
+  - "src/**/*.py"
+  - "config/**/*.yaml"
+  - "models/**/*"
+  - "pyproject.toml"
+  - "README.md"
+python:
+  lock_packages: false
+docker: {}
+envs:
+  - name: UV_INDEX_STRATEGY
+    value: "unsafe-best-match"

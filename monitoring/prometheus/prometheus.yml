@@ -6,4 +6,4 @@ scrape_configs:
   - job_name: "fastapi"
     metrics_path: /metrics
     static_configs:
-      - targets: ["fastapi:8000"]
+      - targets: ["fastapi:3000"]

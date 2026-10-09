@@ -77,7 +77,7 @@ def train(settings: Settings) -> None:
     trainer = Trainer(model, settings.training, device, settings=settings)
     history = trainer.fit(train_loader, val_loader)
 
-    save_checkpoint(model, settings, out_dir / CHECKPOINT_FILENAME)
+    save_checkpoint(model, preprocessor, settings, out_dir / CHECKPOINT_FILENAME)
     (out_dir / "history.json").write_text(
         json.dumps([epoch.to_dict() for epoch in history], indent=2), encoding="utf-8"
     )

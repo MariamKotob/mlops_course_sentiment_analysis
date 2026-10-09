@@ -23,8 +23,8 @@ jobs:
         with:
           enable-cache: true # reuse downloaded packages between runs (faster)
 
-      # 3. Install Python + all dependencies exactly as pinned in uv.lock.
-      - run: uv sync --locked
+      # 3. Install Python + all dependencies exactly as pinned in uv.lock, including extras.
+      - run: uv sync --locked --all-extras
 
       # 4. Run the tests (coverage settings come from pyproject.toml).
       - run: uv run pytest

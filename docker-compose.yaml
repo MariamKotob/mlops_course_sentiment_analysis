@@ -1,13 +1,12 @@
 services:
   fastapi:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: sentiment-api:latest
     ports:
-      - "8000:8000"
+      - "3000:3000"
     volumes:
-      - ./models:/app/models:ro
-      - ./config:/app/config:ro
+      # We don't mount models or config here anymore! 
+      # They are baked directly into the BentoML container artifact.
+      - ./logs:/app/logs
     networks:
       - monitoring
 
@@ -26,7 +25,7 @@ services:
   grafana:
     image: grafana/grafana:11.6.0
     ports:
-      - "3000:3000"
+      - "3001:3000" # Exposing on 3001 so it doesn't clash with BentoML on 3000
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:?set GRAFANA_ADMIN_USER in .env}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:?set GRAFANA_ADMIN_PASSWORD in .env}

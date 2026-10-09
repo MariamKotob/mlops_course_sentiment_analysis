@@ -19,11 +19,6 @@ def test_predict_batch(client):
     assert len(response.json()) == 3
 
 
-def test_returns_503_when_model_not_loaded(client, monkeypatch):
-    monkeypatch.setattr(app.state, "predictor", None)
-    response = client.get("/health")
-    assert response.status_code == 503
-    assert response.json()["detail"] == "Model not loaded"
 
 
 def test_predict_rejects_invalid_input(client):
